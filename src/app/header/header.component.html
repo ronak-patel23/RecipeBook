@@ -23,7 +23,7 @@
           <a style="cursor: pointer">Log Out</a>
         </li>
 
-        <li class="dropdown" appDropDown>
+        <li class="dropdown" appDropDown  *ngIf="isAuthenticated">
           <a style="cursor: pointer" class="dropdown-toggle" role="button"
             >Manage <span class="caret"></span
           ></a>
