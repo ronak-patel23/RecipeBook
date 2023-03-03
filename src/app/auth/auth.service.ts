@@ -16,6 +16,8 @@ export interface AuthResponseData {
   providedIn: 'root',
 })
 export class AuthService {
+  user = new BehaviorSubject<User>(null);
+  token: string = null;
   constructor(private http: HttpClient, private router: Router) {}
 
   autoLogin() {
@@ -34,8 +36,7 @@ export class AuthService {
     }
   }
 
-  user = new BehaviorSubject<User>(null);
-  token: string = null;
+  
 
   Login(email: string, password: string) {
     return this.http
