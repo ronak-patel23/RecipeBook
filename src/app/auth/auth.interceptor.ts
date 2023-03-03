@@ -23,6 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
               params: new HttpParams().set('auth', user.token),
             });
             return next.handle(ModifiedReq);
-        }))
+        })) 
   }
 }
