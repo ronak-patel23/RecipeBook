@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
   HttpParams
 } from '@angular/common/http';
-import { exhaustMap, Observable, take } from 'rxjs';
+import { exhaustMap, map, Observable, take } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -17,9 +17,11 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler) {
         return this.authService.user.pipe(take(1), exhaustMap(user => {  
             if(!user){
+              console.log(request);
               return next.handle(request);
             }
             const ModifiedReq = request.clone({
+               
               params: new HttpParams().set('auth', user.token),
             });
             return next.handle(ModifiedReq);
