@@ -21,6 +21,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AlertComponent } from './shared/alert/alert.component';
+import { PlaceholderDirective } from './shared/placeholder.directive';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AlertComponent } from './shared/alert/alert.component';
     AuthComponent,
     LoadingSpinnerComponent,
     AlertComponent,
+    PlaceholderDirective,
   ],
   imports: [
     BrowserModule,
@@ -52,5 +54,6 @@ import { AlertComponent } from './shared/alert/alert.component';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
+  entryComponents:[AlertComponent]  
 })
 export class AppModule {}

@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthResponseData, AuthService } from './auth.service';
 import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder.directive';
 
 @Component({
   selector: 'app-auth',
@@ -11,11 +13,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  @ViewChild(PlaceholderDirective)
+  alertHost: PlaceholderDirective;
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
   isLoginMode = false;
   isLoading = false;
   error: string = null;
-  
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -36,14 +43,15 @@ export class AuthComponent {
       (resData) => {
         console.log(resData);
         this.isLoading = false;
-        if(this.isLoginMode){
+        if (this.isLoginMode) {
           this.router.navigate(['recipes']);
-        }    
-       this.onSwitchMode();
+        }
+        this.onSwitchMode();
       },
       (errorMsg) => {
         console.log(errorMsg);
         this.error = errorMsg;
+        this.showErrorAlert(errorMsg);
         this.isLoading = false;
       }
     );
@@ -54,7 +62,15 @@ export class AuthComponent {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onHandleError(){
-    this.error=null;
+  onHandleError() {
+    this.error = null;
+  }
+
+  private showErrorAlert(message: string) {
+    const altCmpFactory =
+      this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const alertHostRef = this.alertHost.viewContainerRef;
+    alertHostRef.clear();
+    alertHostRef.createComponent(altCmpFactory);
   }
 }
