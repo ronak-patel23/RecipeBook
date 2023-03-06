@@ -15,6 +15,7 @@ export class AuthComponent {
   isLoginMode = false;
   isLoading = false;
   error: string = null;
+  
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
