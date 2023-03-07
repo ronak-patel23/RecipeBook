@@ -2,7 +2,7 @@ import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthResponseData, AuthService } from './auth.service';
 import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder.directive';
@@ -23,6 +23,7 @@ export class AuthComponent {
   isLoginMode = false;
   isLoading = false;
   error: string = null;
+  closeSub: Subscription;
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -51,7 +52,7 @@ export class AuthComponent {
       (errorMsg) => {
         console.log(errorMsg);
         this.error = errorMsg;
-        this.showErrorAlert(errorMsg);
+        // this.showErrorAlert(errorMsg);
         this.isLoading = false;
       }
     );
@@ -69,8 +70,16 @@ export class AuthComponent {
   private showErrorAlert(message: string) {
     const altCmpFactory =
       this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+
     const alertHostRef = this.alertHost.viewContainerRef;
+
     alertHostRef.clear();
-    alertHostRef.createComponent(altCmpFactory);
+    const compRef = alertHostRef.createComponent(altCmpFactory);
+
+    compRef.instance.message = message;
+    this.closeSub = compRef.instance.close.subscribe(() => {
+      this.closeSub.unsubscribe();
+      alertHostRef.clear();
+    });
   }
 }
