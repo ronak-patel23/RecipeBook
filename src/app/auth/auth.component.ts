@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder.directive';
-
+import { OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -40,6 +40,7 @@ export class AuthComponent {
     } else {
       authObs = this.authService.signup(email, password);
     }
+
     authObs.subscribe(
       (resData) => {
         console.log(resData);
@@ -67,19 +68,24 @@ export class AuthComponent {
     this.error = null;
   }
 
-  private showErrorAlert(message: string) {
-    const altCmpFactory =
-      this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+  // private showErrorAlert(message: string) {
+  //   const altCmpFactory =
+  //     this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
 
-    const alertHostRef = this.alertHost.viewContainerRef;
+  //   const alertHostRef = this.alertHost.viewContainerRef;
 
-    alertHostRef.clear();
-    const compRef = alertHostRef.createComponent(altCmpFactory);
+  //   alertHostRef.clear();
+  //   const compRef = alertHostRef.createComponent(altCmpFactory);
 
-    compRef.instance.message = message;
-    this.closeSub = compRef.instance.close.subscribe(() => {
-      this.closeSub.unsubscribe();
-      alertHostRef.clear();
-    });
-  }
+  //   compRef.instance.message = message;
+  //   this.closeSub = compRef.instance.close.subscribe(() => {
+  //     this.closeSub.unsubscribe();
+  //     alertHostRef.clear();
+  //   });
+  // }
+
+  // ngOnDestroy(): void {
+  //   this.closeSub.unsubscribe();
+
+  // }
 }
