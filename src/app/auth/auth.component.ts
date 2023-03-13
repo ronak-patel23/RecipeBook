@@ -2,7 +2,7 @@ import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthResponseData, AuthService } from './auth.service';
 import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder.directive';
@@ -29,6 +29,7 @@ export class AuthComponent {
     if (!form.valid) {
       return;
     }
+   
     const email = form.value.email;
     const password = form.value.password;
     let authObs: Observable<AuthResponseData>;
