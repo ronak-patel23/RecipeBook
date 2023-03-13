@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthResponseData, AuthService } from './auth.service';
 import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
@@ -12,7 +12,7 @@ import { OnDestroy } from '@angular/core';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
   @ViewChild(PlaceholderDirective)
   alertHost: PlaceholderDirective;
   constructor(
@@ -25,11 +25,15 @@ export class AuthComponent {
   error: string = null;
   closeSub: Subscription;
 
+
+  ngOnInit (): void{
+    console.log(this.authService.token);
+  }
   onSubmit(form: NgForm) {
     if (!form.valid) {
       return;
     }
-   
+
     const email = form.value.email;
     const password = form.value.password;
     let authObs: Observable<AuthResponseData>;
@@ -38,6 +42,7 @@ export class AuthComponent {
 
     if (this.isLoginMode) {
       authObs = this.authService.Login(email, password);
+
     } else {
       authObs = this.authService.signup(email, password);
     }
