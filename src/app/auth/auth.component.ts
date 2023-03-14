@@ -26,9 +26,7 @@ export class AuthComponent {
   closeSub: Subscription;
 
 
-  ngOnInit (): void{
-    console.log(this.authService.token);
-  }
+
   onSubmit(form: NgForm) {
     if (!form.valid) {
       return;

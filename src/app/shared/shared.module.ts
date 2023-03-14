@@ -22,4 +22,8 @@ import { DropDownDirective } from './drop-down.directive';
   ],
   entryComponents: [AlertComponent],
 })
-export class SharedModule {}
+export class SharedModule {
+  constructor(){
+    console.log("shared Module")
+  }
+}

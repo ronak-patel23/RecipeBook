@@ -12,10 +12,14 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     RouterModule.forChild([
       {
-        path: 'shopping-list',
+        path: '',
         component: ShoppingListComponent,
       },
     ]), FormsModule,SharedModule
   ],
 })
-export class ShoppingListModule {}
+export class ShoppingListModule {
+  constructor(){
+    console.log("shopping Module")
+  }
+}

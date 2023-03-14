@@ -18,4 +18,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 })
-export class CoreModule { }
+export class CoreModule {
+  constructor(){
+    console.log("core Module");
+  }
+ }
