@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { RecipeService } from '../recipes/recipe.service';
@@ -14,7 +14,8 @@ import { DataStorageService } from '../shared/data-storage.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   isAuthenticated = false;
-
+    data;
+    userID
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -22,6 +23,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe((user) => {
+      if(!user){
+        return;
+      }
+      this.userID = user.id
+      console.log(this.userID)
       this.isAuthenticated = !!user;
       console.log(!user);
       console.log(!!user);
@@ -39,13 +45,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   onSave() {
-    this.dataStorage.storeRecipe().subscribe((res) => {
-      console.log(res);
+    this.dataStorage.storeRecipe(this.userID).subscribe((res) => {
+    
+       
     });
   }
   onFetch() {
-    this.dataStorage.fetchData().subscribe((res) => {
-      console.log(res);
+    this.dataStorage.fetchData(this.userID).subscribe((res) => {
+        console.log(res);
     });
   }
 }

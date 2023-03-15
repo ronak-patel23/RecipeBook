@@ -9,32 +9,44 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root',
 })
 export class DataStorageService {
-  constructor(private recipeService: RecipeService, private http: HttpClient , private authService : AuthService) {}
+  constructor(
+    private recipeService: RecipeService,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
-  storeRecipe() {
+  storeRecipe(id: string) {
     const recipes = this.recipeService.getRecipe();
     return this.http.put(
-      'https://recipe-book-2c1c0-default-rtdb.firebaseio.com/recipes.json',
+      `https://recipe-book-2c1c0-default-rtdb.firebaseio.com/users/${id}/recipes.json`,
       recipes
     );
   }
 
-  fetchData() {
- 
-        return this.http
-        .get<Recipe[]>(
-          'https://recipe-book-2c1c0-default-rtdb.firebaseio.com/recipes.json'
-        ).pipe
-      ( map((recipes) => {
-          return recipes.map((recipe) => {
-            return {
-              ...recipe,
-              ingrediants: recipe.ingrediant ?? [],
-            };
-          });
+  fetchData(id: string) {
+    return this.http
+      .get<Recipe[]>(
+        `https://recipe-book-2c1c0-default-rtdb.firebaseio.com/users/${id}/recipes.json`
+      )
+      .pipe(
+        map((recipes) => {
+          if (!recipes) {
+            return;
+          } else {
+            return recipes.map((recipe) => {
+              return {
+                ...recipe,
+                ingrediants: recipe.ingrediant ?? [],
+              };
+            });
+          }
         }),
         tap((recipes) => {
-          this.recipeService.setRecipe(recipes);
+          if (!recipes) {
+            return;
+          } else {
+            this.recipeService.setRecipe(recipes);
+          }
         })
       );
   }
