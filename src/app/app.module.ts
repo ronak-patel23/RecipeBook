@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -19,6 +20,7 @@ import { CoreModule } from './core.module';
     ReactiveFormsModule,
     SharedModule,
     CoreModule,
+    StoreModule.forRoot({}, {}),
   ],
 
   bootstrap: [AppComponent],
