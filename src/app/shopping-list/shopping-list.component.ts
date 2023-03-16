@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Ingrediant } from '../shared/ingrediant.model';
 import { ShoppingService } from './shopping.service';
+import { SELECT_INGREDIANT } from './store/shopping-list.actions';
 import { State } from './store/shopping-list1.reducer';
 
 @Component({
@@ -16,7 +17,10 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   constructor(private shoppingService: ShoppingService, private store:Store<{shoppingList: State}>) {}
 
   addItem(index: number) {
-    this.shoppingService.startedEditing.next(index);
+    // this.shoppingService.startedEditing.next(index);
+        this.store.dispatch(SELECT_INGREDIANT({
+              index: index
+        }))
   }
 
   

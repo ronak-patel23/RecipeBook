@@ -1,11 +1,15 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { Ingrediant } from '../shared/ingrediant.model';
+import { UPDATE_INGREDIANT } from './store/shopping-list.actions';
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingService {
-  constructor() {}
+  constructor(
+    private store: Store<{ shoppingList: { ingrediant: Ingrediant } }>
+  ) {}
 
   ingrediantChange = new Subject<Ingrediant[]>();
   startedEditing = new Subject<number>();
@@ -35,10 +39,11 @@ export class ShoppingService {
   updateIngrediant(index: number, newIngrediant: Ingrediant) {
     this.ingrediant[index] = newIngrediant;
     this.ingrediantChange.next(this.ingrediant.slice());
+    
   }
 
-  deleteIngrediant (index:number){
-    this.ingrediant.splice(index,1);
-    this.ingrediantChange.next(this.ingrediant.slice())
+  deleteIngrediant(index: number) {
+    this.ingrediant.splice(index, 1);
+    this.ingrediantChange.next(this.ingrediant.slice());
   }
 }
